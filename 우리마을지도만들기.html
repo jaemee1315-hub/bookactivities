@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>마을 안내도 독서활동 활동지 (6개 활동 + 큰 글씨 모드 + 그림 크게 + 업로드/붙여넣기)</title>
+  <style>
+    :root{
+      --ink:#111827;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --soft:#f3f4f6;
+      --ok:#16a34a;
+      --warn:#f59e0b;
+
+      /* 큰 글씨 모드(기본: 보통) */
+      --fs-body: 16px;
+      --lh-body: 1.55;
+
+      --fs-h1: 20px;
+      --fs-sub: 13px;
+
+      --fs-h2: 17px;
+      --fs-hint: 13px;
+
+      --fs-pill: 12px;
+      --fs-q: 16px;
+
+      --fs-input: 14px;
+      --pad-input-y: 10px;
+      --pad-input-x: 12px;
+      --ta-minh: 82px;
+
+      --fs-choice: 14px;
+      --pad-choice-y: 9px;
+      --pad-choice-x: 11px;
+      --radio-size: 16px;
+
+      --badge-size: 34px;
+      --badge-radius: 10px;
+      --badge-font: 16px;
+
+      --token-font: 14px;
+      --token-pad-y: 8px;
+      --token-pad-x: 10px;
+
+      /* ✅ 캔버스 크기 */
+      --canvas-h: 420px;
+      --canvas-h-print: 320px;
+    }
+
+    body.font-large{
+      --fs-body: 18px; --lh-body: 1.7;
+      --fs-h1: 28px; --fs-sub: 16px;
+      --fs-h2: 22px; --fs-hint: 16px;
+      --fs-pill: 14px; --fs-q: 19px;
+
+      --fs-input: 18px;
+      --pad-input-y: 14px; --pad-input-x: 14px;
+      --ta-minh: 110px;
+
+      --fs-choice: 18px;
+      --pad-choice-y: 12px; --pad-choice-x: 14px;
+      --radio-size: 20px;
+
+      --badge-size: 44px; --badge-radius: 12px; --badge-font: 20px;
+
+      --token-font: 18px;
+      --token-pad-y: 12px; --token-pad-x: 14px;
+
+      --canvas-h: 520px;
+      --canvas-h-print: 360px;
+    }
+
+    body.font-xlarge{
+      --fs-body: 20px; --lh-body: 1.8;
+      --fs-h1: 32px; --fs-sub: 17px;
+      --fs-h2: 24px; --fs-hint: 17px;
+      --fs-pill: 15px; --fs-q: 21px;
+
+      --fs-input: 20px;
+      --pad-input-y: 16px; --pad-input-x: 16px;
+      --ta-minh: 125px;
+
+      --fs-choice: 20px;
+      --pad-choice-y: 14px; --pad-choice-x: 16px;
+      --radio-size: 22px;
+
+      --badge-size: 48px; --badge-radius: 14px; --badge-font: 22px;
+
+      --token-font: 20px;
+      --token-pad-y: 14px; --token-pad-x: 16px;
+
+      --canvas-h: 620px;
+      --canvas-h-print: 400px;
+    }
+
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans KR",Arial,sans-serif;
+      color:var(--ink);
+      background:var(--bg);
+      line-height:var(--lh-body);
+      font-size:var(--fs-body);
+    }
+    header{
+      background:#fff;
+      border-bottom:1px solid var(--line);
+      position:sticky; top:0; z-index:10;
+    }
+    .wrap{max-width:980px;margin:0 auto;padding:18px 16px 42px}
+    header .wrap{padding:14px 16px}
+    h1{font-size:var(--fs-h1);margin:0 0 6px}
+    .sub{margin:0;color:var(--muted);font-size:var(--fs-sub)}
+    .toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:10px}
+
+    button{
+      border:1px solid var(--line);
+      background:#fff;
+      border-radius:12px;
+      padding:9px 12px;
+      cursor:pointer;
+      font-weight:800;
+    }
+    button:hover{border-color:#cbd5e1}
+
+    .pill{
+      font-size:var(--fs-pill);
+      color:var(--muted);
+      border:1px dashed var(--line);
+      background:#fff;
+      border-radius:999px;
+      padding:7px 10px;
+    }
+    .seg{
+      display:flex; gap:6px; flex-wrap:wrap; align-items:center;
+      border:1px solid var(--line);
+      border-radius:999px;
+      padding:6px;
+      background:#fff;
+    }
+    .seg button{
+      border-radius:999px;
+      padding:8px 10px;
+      border:1px solid transparent;
+      font-weight:900;
+    }
+    .seg button.active{
+      border-color:#cbd5e1;
+      background:#f8fafc;
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+      box-shadow:0 1px 0 rgba(0,0,0,.02);
+      margin:14px 0;
+    }
+    .head{display:flex;gap:10px;align-items:flex-start;margin-bottom:10px}
+    .badge{
+      width:var(--badge-size);
+      height:var(--badge-size);
+      border-radius:var(--badge-radius);
+      background:var(--ink);color:#fff;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:900;
+      font-size:var(--badge-font);
+      flex:0 0 auto;
+    }
+    h2{font-size:var(--fs-h2);margin:0}
+    .hint{margin:6px 0 0;color:var(--muted);font-size:var(--fs-hint)}
+
+    .lineq{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:8px;
+      padding:10px 0;
+      border-top:1px dashed var(--line);
+    }
+    .lineq:first-of-type{border-top:none}
+    .qtext{font-weight:900; font-size:var(--fs-q)}
+    .answers{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+
+    .choice{
+      display:flex;align-items:center;gap:10px;
+      padding:var(--pad-choice-y) var(--pad-choice-x);
+      border:1px solid var(--line);
+      border-radius:16px;
+      background:#fff;
+      font-weight:800;
+      font-size:var(--fs-choice);
+    }
+    .choice input{ width:var(--radio-size); height:var(--radio-size); }
+
+    textarea,input[type="text"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:12px;
+      padding:var(--pad-input-y) var(--pad-input-x);
+      font-size:var(--fs-input);
+      background:#fff;
+    }
+    textarea{min-height:var(--ta-minh);resize:vertical}
+
+    .keyline{
+      background:var(--soft);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      margin-top:12px;
+      font-weight:800;
+    }
+    .small{font-size:12px;color:var(--muted);margin:6px 0 0}
+
+    /* 토큰 분류 */
+    .tokens{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .token{
+      user-select:none;
+      padding:var(--token-pad-y) var(--token-pad-x);
+      border-radius:999px;
+      border:1px solid var(--line);
+      background:#fff;
+      font-weight:900;
+      cursor:grab;
+      font-size:var(--token-font);
+    }
+    .token:active{cursor:grabbing}
+    .bins{display:grid;grid-template-columns:1fr;gap:12px;margin-top:10px}
+    @media (min-width:760px){.bins{grid-template-columns:1fr 1fr}}
+    .bin{
+      border:2px dashed #cbd5e1;
+      border-radius:16px;
+      padding:10px;
+      background:#fff;
+      min-height:140px;
+    }
+    .bin h3{margin:0 0 4px;font-size:14px}
+    .bin .bin-sub{margin:0;color:var(--muted);font-size:12px}
+    .bin.over{border-color:#94a3b8;background:#f8fafc}
+    #tokens.over{outline:2px dashed #94a3b8; outline-offset:6px; border-radius:16px}
+
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+    .result{
+      margin-top:10px;
+      font-weight:900;
+      padding:10px 12px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background:#fff;
+    }
+
+    /* 캔버스 */
+    .bigbox{
+      border:2px dashed #cbd5e1;
+      border-radius:18px;
+      padding:12px;
+      background:#fff;
+      margin-top:10px;
+    }
+    canvas{
+      width:100%;
+      height:var(--canvas-h);
+      border:2px solid var(--line);
+      border-radius:16px;
+      display:block;
+      background:#fff;
+      touch-action:none;
+    }
+    .draw-tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+
+    /* 업로드 미리보기 */
+    .preview{
+      max-width:100%;
+      display:none;
+      border:2px solid var(--line);
+      border-radius:16px;
+    }
+
+    /* 붙여넣기/드롭 박스 */
+    .pastebox{
+      margin-top:10px;
+      border:2px dashed #cbd5e1;
+      border-radius:16px;
+      padding:14px 12px;
+      background:#fff;
+      font-weight:900;
+      cursor:pointer;
+      user-select:none;
+    }
+    .pastebox:focus{
+      outline:3px solid #cbd5e1;
+      outline-offset:2px;
+    }
+    .pastebox.over{
+      border-color:#94a3b8;
+      background:#f8fafc;
+    }
+
+    @media print{
+      header{position:static}
+      body{background:#fff}
+      .toolbar, .no-print{display:none !important}
+      .wrap{padding:0 10mm 10mm}
+      canvas{height:var(--canvas-h-print)}
+      button{display:none}
+
+      .preview{display:none !important}
+      .preview.has-src{display:block !important}
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="wrap">
+    <h1>마을 안내도 독서활동 활동지 (6개 활동)</h1>
+    <p class="sub">핵심 개념: <b>지도는 위치를 알 수 있도록 주변과의 관계를 생각해 그린 약속</b>이에요.</p>
+
+    <div class="toolbar">
+      <button type="button" onclick="window.print()">인쇄하기</button>
+      <button type="button" onclick="resetAll()">전체 초기화</button>
+
+      <div class="seg no-print" aria-label="큰 글씨 모드">
+        <button type="button" id="btnNormal" onclick="setFontMode('normal')">보통</button>
+        <button type="button" id="btnLarge" onclick="setFontMode('large')">큰 글씨</button>
+        <button type="button" id="btnXLarge" onclick="setFontMode('xlarge')">아주 크게</button>
+      </div>
+
+      <span class="pill">6개 활동 유지</span>
+      <span class="pill">기호: 내가 만들기</span>
+      <span class="pill">업로드/붙여넣기</span>
+      <span class="pill">그림 크게(버튼)</span>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- 1 -->
+  <section class="card" id="act1">
+    <div class="head">
+      <div class="badge">1</div>
+      <div>
+        <h2>생각 열기</h2>
+        <p class="hint">“위치”를 알려주려면 주변이 왜 필요할까요?</p>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">1-1) 놀이터만 그린 그림을 주면 친구가 놀이터를 찾을 수 있을까요?</div>
+      <div class="answers">
+        <label class="choice"><input type="radio" name="a1_1" value="yes"> 찾을 수 있어요</label>
+        <label class="choice"><input type="radio" name="a1_1" value="no"> 찾기 어려워요</label>
+      </div>
+      <textarea id="a1_why" placeholder="왜 그렇게 생각했나요? (아이 말 받아 적기)"></textarea>
+    </div>
+
+    <div class="keyline">정리: 위치를 알려주려면 <b>주변과의 관계(옆에/앞에/건너편/따라가면)</b>가 필요해요.</div>
+  </section>
+
+  <!-- 2 -->
+  <section class="card" id="act2">
+    <div class="head">
+      <div class="badge">2</div>
+      <div>
+        <h2>주변 고르기</h2>
+        <p class="hint">찾게 하려면 무엇을 같이 그리면 좋을까요?</p>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">2-1) 놀이터를 찾게 하려면 “같이 그리면 좋은 것”에 체크해요.</div>
+      <div class="answers">
+        <label class="choice"><input type="checkbox" name="a2_1" value="집"> 집</label>
+        <label class="choice"><input type="checkbox" name="a2_1" value="길"> 길</label>
+        <label class="choice"><input type="checkbox" name="a2_1" value="학교"> 학교</label>
+        <label class="choice"><input type="checkbox" name="a2_1" value="마트"> 마트</label>
+        <label class="choice"><input type="checkbox" name="a2_1" value="하늘"> 하늘</label>
+      </div>
+      <textarea id="a2_talk" placeholder="한 문장으로 말해요. 예: ‘놀이터는 학교 옆에 있어요.’"></textarea>
+    </div>
+  </section>
+
+  <!-- 3 -->
+  <section class="card" id="act3">
+    <div class="head">
+      <div class="badge">3</div>
+      <div>
+        <h2>내가 만드는 기호(범례) 만들기</h2>
+        <p class="hint">정답 맞히기 대신, <b>내가 기호를 만들고</b> “좋은 기호란?”을 생각해요.</p>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">3-1) 기호를 만들 대상 4가지를 고르고 적어요.</div>
+      <textarea id="sym_targets" placeholder="예: 우리집, 학교, 놀이터, 마트"></textarea>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">3-2) 좋은 기호는 어떤 기호일까요? (체크)</div>
+      <div class="answers">
+        <label class="choice"><input type="checkbox" name="sym_good" value="간단"> 간단해요</label>
+        <label class="choice"><input type="checkbox" name="sym_good" value="구별"> 다른 기호와 구별돼요</label>
+        <label class="choice"><input type="checkbox" name="sym_good" value="뜻이짐작"> 뜻이 짐작돼요</label>
+        <label class="choice"><input type="checkbox" name="sym_good" value="작아도보임"> 작게 그려도 보여요</label>
+      </div>
+      <textarea id="sym_reason" placeholder="왜 그렇게 생각했나요? (짧게)"></textarea>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">3-3) 내가 만든 기호(범례)를 적어요. (대상=기호)</div>
+      <textarea id="legend" placeholder="예: 🏠=우리집, 🎒=학교, ⭐=놀이터, ■=마트"></textarea>
+      <div class="small">팁: 같은 모양을 쓰면 헷갈려요. 모양/색(말로)/패턴(점선)으로 구별해도 좋아요.</div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">3-4) 테스트! 친구가 내 범례를 보고 맞힐 수 있을까요?</div>
+      <div class="answers">
+        <label class="choice"><input type="radio" name="sym_test" value="yes"> 네</label>
+        <label class="choice"><input type="radio" name="sym_test" value="no"> 아직 어려워요</label>
+      </div>
+      <textarea id="sym_fix" placeholder="어려웠다면 무엇을 고치면 좋을까요? 예: 더 단순하게 / 더 다르게 / 더 비슷하게"></textarea>
+    </div>
+
+    <div class="keyline">정리: 기호는 “그림”이 아니라 <b>뜻이 정해진 약속</b>이에요. 내 기호가 약속이 되려면 <b>간단 + 구별 + 알아보기</b>가 중요해요.</div>
+  </section>
+
+  <!-- 4 -->
+  <section class="card" id="act4">
+    <div class="head">
+      <div class="badge">4</div>
+      <div>
+        <h2>환경 분류</h2>
+        <p class="hint">단어 토큰을 끌어 옮겨 “자연환경 / 인문환경”으로 나누어요.</p>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">4-1) 아래 단어를 “자연환경 / 인문환경”으로 나누어 놓아요.</div>
+      <div class="tokens" id="tokens">
+        <span class="token" draggable="true" data-type="natural">산</span>
+        <span class="token" draggable="true" data-type="natural">강</span>
+        <span class="token" draggable="true" data-type="natural">나무</span>
+        <span class="token" draggable="true" data-type="human">집</span>
+        <span class="token" draggable="true" data-type="human">학교</span>
+        <span class="token" draggable="true" data-type="human">도로</span>
+        <span class="token" draggable="true" data-type="human">놀이터</span>
+      </div>
+
+      <div class="bins">
+        <div class="bin" id="binNatural" data-bin="natural">
+          <h3>🌳 자연환경</h3>
+          <p class="bin-sub">사람이 만들지 않은 것</p>
+        </div>
+        <div class="bin" id="binHuman" data-bin="human">
+          <h3>🏠 인문환경</h3>
+          <p class="bin-sub">사람이 만든 것</p>
+        </div>
+      </div>
+
+      <div class="actions no-print">
+        <button type="button" onclick="checkBins()">분류 확인</button>
+        <button type="button" onclick="resetBins()">분류 초기화</button>
+      </div>
+      <div id="binResult" class="result" aria-live="polite">결과가 여기 표시돼요.</div>
+    </div>
+  </section>
+
+  <!-- 5 -->
+  <section class="card" id="act5">
+    <div class="head">
+      <div class="badge">5</div>
+      <div>
+        <h2>우리 동네 그림지도 만들기</h2>
+        <p class="hint">직접 그리거나, 종이에 그린 뒤 <b>업로드/붙여넣기/드롭</b>로 첨부해도 돼요.</p>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">5-0) 그림 첨부(선택): 업로드/붙여넣기(Ctrl+V)/드래그앤드롭</div>
+      <div class="answers">
+        <label class="choice">
+          <input id="uploadMapImg" type="file" accept="image/*" />
+          그림/사진 업로드
+        </label>
+        <button type="button" class="no-print" onclick="clearUploadedImage()">첨부 지우기</button>
+      </div>
+
+      <div style="margin-top:10px;">
+        <img id="uploadPreview" class="preview" alt="첨부한 그림 미리보기" />
+        <div id="uploadHint" class="small" style="display:block;">첨부한 그림이 여기 표시돼요.</div>
+
+        <div id="pasteBox" class="pastebox no-print" tabindex="0" role="button" aria-label="여기에 그림을 붙여넣기">
+          📋 여기를 클릭하고 <b>Ctrl + V</b>로 그림을 붙여넣거나, 파일을 여기로 끌어다 놓으세요.
+        </div>
+        <div class="small no-print">※ 클립보드에 “이미지”가 있을 때만 붙여넣기가 동작해요.</div>
+
+        <div class="small">※ 큰 사진은 저장이 안 될 수 있어요(브라우저 용량 제한). 미리보기는 정상 동작합니다.</div>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">5-1) 지도에 꼭 넣기: 우리 집 + 길 + 기준(학교/놀이터/마트 중 1개) + 관계(옆/앞/건너편)</div>
+      <div class="bigbox">
+        <canvas id="mapCanvas" aria-label="우리 동네 그림지도"></canvas>
+        <div class="draw-tools no-print">
+          <button type="button" onclick="setMode('draw')">그리기</button>
+          <button type="button" onclick="setMode('erase')">지우개</button>
+
+          <label class="choice" style="margin:0">
+            굵기 <input type="range" id="penSize" min="2" max="24" value="6" />
+          </label>
+
+          <button type="button" onclick="resizeCanvasUI(120)">그림 크게</button>
+          <button type="button" onclick="resizeCanvasUI(-120)">그림 작게</button>
+
+          <button type="button" onclick="clearCanvas()">전체 지우기</button>
+          <button type="button" onclick="saveCanvas()">그림 저장(브라우저)</button>
+        </div>
+        <div class="small">팁: 예쁘게보다 “찾을 수 있게”가 더 중요해요.</div>
+      </div>
+    </div>
+
+    <div class="keyline">내 지도에 범례가 들어갔나요? (활동 3에서 만든 기호를 사용해요!)</div>
+  </section>
+
+  <!-- 6 -->
+  <section class="card" id="act6">
+    <div class="head">
+      <div class="badge">6</div>
+      <div>
+        <h2>안내도 완성 & 마무리</h2>
+        <p class="hint">한눈에 보이는 “안내도” + 말로 설명하는 “안내서”를 함께 만들어봐요.</p>
+      </div>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">6-1) 안내서 한 문장 쓰기: “우리 집에서 기준 장소까지 가는 길”</div>
+      <textarea id="guideText" placeholder="예: 우리 집에서 나와서 오른쪽 길로 쭉 가요. 학교를 지나면 놀이터가 보여요."></textarea>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">6-2) 내가 만든 기호를 친구가 헷갈리지 않게 하려면, 가장 중요한 점은?</div>
+      <div class="answers">
+        <label class="choice"><input type="radio" name="sym_key" value="간단"> 간단하게</label>
+        <label class="choice"><input type="radio" name="sym_key" value="구별"> 서로 다르게(구별)</label>
+        <label class="choice"><input type="radio" name="sym_key" value="짐작"> 뜻이 짐작되게</label>
+      </div>
+      <textarea id="sym_key_why" placeholder="왜 그렇게 생각했나요?"></textarea>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">6-3) 오늘의 한 문장: “지도는 ___ 을(를) 알기 위해 ___ 을(를) 함께 그려요.”</div>
+      <textarea id="oneLine" placeholder="예: 지도는 ‘어디에 있는지’를 알기 위해 ‘주변’을 함께 그려요."></textarea>
+    </div>
+
+    <div class="lineq">
+      <div class="qtext">6-4) 오늘 활동 느낌은?</div>
+      <div class="answers">
+        <label class="choice"><input type="radio" name="feel" value="😀"> 😀 재미있었어</label>
+        <label class="choice"><input type="radio" name="feel" value="🙂"> 🙂 괜찮았어</label>
+        <label class="choice"><input type="radio" name="feel" value="😕"> 😕 어려웠어</label>
+      </div>
+    </div>
+
+    <div class="keyline">
+      최종 핵심: 지도는 세상을 그대로 복사한 게 아니라 <b>위치를 알 수 있게 주변 관계를 담아 표현한 약속</b>이에요.
+    </div>
+  </section>
+
+</main>
+
+<script>
+  // =========================
+  // 큰 글씨 모드
+  // =========================
+  const FONT_KEY = "font_mode_v1";
+  function setFontMode(mode){
+    document.body.classList.remove("font-large","font-xlarge");
+    if(mode === "large") document.body.classList.add("font-large");
+    if(mode === "xlarge") document.body.classList.add("font-xlarge");
+    try{ localStorage.setItem(FONT_KEY, mode); }catch(e){}
+    syncFontButtons(mode);
+
+    const saved = loadCanvas();
+    fitCanvas();
+    if(saved) restoreCanvas(saved);
+  }
+  function syncFontButtons(mode){
+    const btnNormal = document.getElementById("btnNormal");
+    const btnLarge = document.getElementById("btnLarge");
+    const btnXLarge = document.getElementById("btnXLarge");
+    [btnNormal,btnLarge,btnXLarge].forEach(b=> b && b.classList.remove("active"));
+    if(mode === "large") btnLarge && btnLarge.classList.add("active");
+    else if(mode === "xlarge") btnXLarge && btnXLarge.classList.add("active");
+    else btnNormal && btnNormal.classList.add("active");
+  }
+  function loadFontMode(){
+    try{ return localStorage.getItem(FONT_KEY) || "normal"; }catch(e){ return "normal"; }
+  }
+
+  // =========================
+  // 캔버스 높이 조절 + 저장
+  // =========================
+  const CANVAS_H_KEY = "canvas_height_v1";
+  function resizeCanvasUI(delta){
+    const root = document.documentElement;
+    const current = parseInt(getComputedStyle(root).getPropertyValue("--canvas-h")) || 420;
+    const next = Math.max(280, Math.min(900, current + delta));
+    root.style.setProperty("--canvas-h", next + "px");
+    try{ localStorage.setItem(CANVAS_H_KEY, String(next)); }catch(e){}
+
+    const saved = loadCanvas();
+    fitCanvas();
+    if(saved) restoreCanvas(saved);
+  }
+  function applySavedCanvasHeight(){
+    try{
+      const savedH = parseInt(localStorage.getItem(CANVAS_H_KEY));
+      if(savedH) document.documentElement.style.setProperty("--canvas-h", savedH + "px");
+    }catch(e){}
+  }
+
+  // ---------------- Drag & Drop (Activity 4) ----------------
+  const tokensArea = document.getElementById("tokens");
+  const bins = [document.getElementById("binNatural"), document.getElementById("binHuman")];
+
+  function handleDragStart(e){
+    e.dataTransfer.setData("text/plain", e.target.dataset.type + "|" + e.target.textContent);
+    e.dataTransfer.effectAllowed = "move";
+    e.target.classList.add("dragging");
+  }
+  function handleDragEnd(e){ e.target.classList.remove("dragging"); }
+
+  document.querySelectorAll(".token").forEach(t=>{
+    t.addEventListener("dragstart", handleDragStart);
+    t.addEventListener("dragend", handleDragEnd);
+  });
+
+  bins.forEach(bin=>{
+    bin.addEventListener("dragover", (e)=>{ e.preventDefault(); bin.classList.add("over"); });
+    bin.addEventListener("dragleave", ()=> bin.classList.remove("over"));
+    bin.addEventListener("drop", (e)=>{
+      e.preventDefault();
+      bin.classList.remove("over");
+      const dragging = document.querySelector(".token.dragging");
+      if(dragging) bin.appendChild(dragging);
+    });
+  });
+
+  tokensArea.addEventListener("dragover", (e)=>{ e.preventDefault(); tokensArea.classList.add("over"); });
+  tokensArea.addEventListener("dragleave", ()=> tokensArea.classList.remove("over"));
+  tokensArea.addEventListener("drop", (e)=>{
+    e.preventDefault();
+    tokensArea.classList.remove("over");
+    const dragging = document.querySelector(".token.dragging");
+    if(dragging) tokensArea.appendChild(dragging);
+  });
+
+  function checkBins(){
+    let ok = true;
+    bins.forEach(bin=>{
+      const expected = bin.dataset.bin;
+      bin.querySelectorAll(".token").forEach(t=>{
+        if(t.dataset.type !== expected) ok = false;
+      });
+    });
+    const r = document.getElementById("binResult");
+    if(ok){
+      r.textContent = "✅ 분류가 잘 되었어요!";
+      r.style.borderColor = "var(--ok)";
+    } else {
+      r.textContent = "🔁 조금 섞였어요. ‘사람이 만든 것인가?’를 생각해 다시 옮겨요.";
+      r.style.borderColor = "var(--warn)";
+    }
+  }
+  function resetBins(){
+    bins.forEach(bin=>{
+      bin.querySelectorAll(".token").forEach(t=> tokensArea.appendChild(t));
+    });
+    const r = document.getElementById("binResult");
+    r.textContent = "결과가 여기 표시돼요.";
+    r.style.borderColor = "var(--line)";
+  }
+
+  // ---------------- Canvas (Activity 5-1) ----------------
+  const canvas = document.getElementById("mapCanvas");
+  const ctx = canvas.getContext("2d");
+  let drawing = false;
+  let mode = "draw";
+
+  function fitCanvas(){
+    const rect = canvas.getBoundingClientRect();
+    const dpr = window.devicePixelRatio || 1;
+    canvas.width = Math.floor(rect.width * dpr);
+    canvas.height = Math.floor(rect.height * dpr);
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    ctx.globalCompositeOperation = "source-over";
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(0,0,rect.width,rect.height);
+  }
+
+  function setMode(m){ mode = m; }
+
+  function pos(evt){
+    const r = canvas.getBoundingClientRect();
+    const e = evt.touches ? evt.touches[0] : evt;
+    return { x: e.clientX - r.left, y: e.clientY - r.top };
+  }
+
+  function start(evt){
+    drawing = true;
+    const p = pos(evt);
+    ctx.beginPath();
+    ctx.moveTo(p.x, p.y);
+    evt.preventDefault();
+  }
+  function move(evt){
+    if(!drawing) return;
+    const p = pos(evt);
+    const size = Number(document.getElementById("penSize").value || 6);
+    ctx.lineCap="round"; ctx.lineJoin="round"; ctx.lineWidth=size;
+
+    if(mode === "erase"){
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.strokeStyle = "rgba(0,0,0,1)";
+    } else {
+      ctx.globalCompositeOperation = "source-over";
+      ctx.strokeStyle = "#111827";
+    }
+    ctx.lineTo(p.x,p.y);
+    ctx.stroke();
+    evt.preventDefault();
+  }
+  function end(evt){
+    drawing = false;
+    ctx.closePath();
+    evt.preventDefault();
+  }
+
+  canvas.addEventListener("mousedown", start);
+  canvas.addEventListener("mousemove", move);
+  canvas.addEventListener("mouseup", end);
+  canvas.addEventListener("mouseleave", end);
+  canvas.addEventListener("touchstart", start, {passive:false});
+  canvas.addEventListener("touchmove", move, {passive:false});
+  canvas.addEventListener("touchend", end, {passive:false});
+  canvas.addEventListener("touchcancel", end, {passive:false});
+
+  function clearCanvas(){
+    const r = canvas.getBoundingClientRect();
+    ctx.save();
+    ctx.globalCompositeOperation="source-over";
+    ctx.fillStyle="#ffffff";
+    ctx.fillRect(0,0,r.width,r.height);
+    ctx.restore();
+    saveCanvas();
+  }
+
+  function saveCanvas(){
+    try{
+      localStorage.setItem("mapCanvasData", canvas.toDataURL("image/png"));
+      saveFormState();
+    }catch(e){}
+  }
+  function loadCanvas(){
+    try{ return localStorage.getItem("mapCanvasData"); }catch(e){ return null; }
+  }
+  function restoreCanvas(dataUrl){
+    const img = new Image();
+    img.onload = ()=>{
+      const r = canvas.getBoundingClientRect();
+      ctx.save();
+      ctx.globalCompositeOperation="source-over";
+      ctx.fillStyle = "#ffffff";
+      ctx.fillRect(0,0,r.width,r.height);
+      ctx.drawImage(img, 0, 0, r.width, r.height);
+      ctx.restore();
+    };
+    img.src = dataUrl;
+  }
+
+  // ---------------- Upload + Paste Image (Activity 5-0) ----------------
+  const uploadInput = document.getElementById("uploadMapImg");
+  const previewImg  = document.getElementById("uploadPreview");
+  const uploadHint  = document.getElementById("uploadHint");
+  const pasteBox    = document.getElementById("pasteBox");
+  const UPLOAD_KEY  = "act5_uploaded_image_v1";
+
+  function fileToDataURL(file){
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(String(reader.result));
+      reader.onerror = reject;
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function showUploadedImage(dataUrl){
+    if (!previewImg) return;
+    previewImg.src = dataUrl;
+    previewImg.style.display = "block";
+    previewImg.classList.add("has-src");
+    if (uploadHint) uploadHint.style.display = "none";
+  }
+
+  function clearUploadedImage(){
+    if (uploadInput) uploadInput.value = "";
+    if (previewImg){
+      previewImg.src = "";
+      previewImg.style.display = "none";
+      previewImg.classList.remove("has-src");
+    }
+    if (uploadHint) uploadHint.style.display = "block";
+    try { localStorage.removeItem(UPLOAD_KEY); } catch (e) {}
+  }
+
+  async function attachImageFile(file){
+    if (!file) return;
+    if (!file.type || !file.type.startsWith("image/")) {
+      alert("이미지 파일만 첨부할 수 있어요.");
+      return;
+    }
+    const dataUrl = await fileToDataURL(file);
+    showUploadedImage(dataUrl);
+    try { localStorage.setItem(UPLOAD_KEY, dataUrl); }
+    catch (err) { console.warn("이미지 저장 실패(용량 제한 가능):", err); }
+  }
+
+  if (uploadInput) {
+    uploadInput.addEventListener("change", async (e) => {
+      const file = e.target.files && e.target.files[0];
+      if (!file) return;
+      await attachImageFile(file);
+    });
+  }
+
+  document.addEventListener("paste", async (e) => {
+    const items = e.clipboardData && e.clipboardData.items;
+    if (!items) return;
+    const imgItem = Array.from(items).find(it => it.type && it.type.startsWith("image/"));
+    if (!imgItem) return;
+    e.preventDefault();
+    const file = imgItem.getAsFile();
+    await attachImageFile(file);
+  });
+
+  if (pasteBox) {
+    pasteBox.addEventListener("click", () => pasteBox.focus());
+    pasteBox.addEventListener("dragover", (e)=>{ e.preventDefault(); pasteBox.classList.add("over"); });
+    pasteBox.addEventListener("dragleave", ()=> pasteBox.classList.remove("over"));
+    pasteBox.addEventListener("drop", async (e)=>{
+      e.preventDefault();
+      pasteBox.classList.remove("over");
+      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      await attachImageFile(file);
+    });
+  }
+
+  function restoreUploadedImage(){
+    try{
+      const saved = localStorage.getItem(UPLOAD_KEY);
+      if (saved) showUploadedImage(saved);
+    }catch(e){}
+  }
+
+  // ---------------- Form Save/Load ----------------
+  const idsToSave = [
+    "a1_why","a2_talk",
+    "sym_targets","sym_reason","legend","sym_fix",
+    "guideText","sym_key_why","oneLine"
+  ];
+
+  function saveFormState(){
+    try{
+      idsToSave.forEach(id=>{
+        const el = document.getElementById(id);
+        if(el) localStorage.setItem("f_"+id, el.value || "");
+      });
+
+      // radios
+      const radios = Array.from(document.querySelectorAll('input[type="radio"]'));
+      const names = [...new Set(radios.map(r=>r.name))];
+      names.forEach(n=>{
+        const checked = document.querySelector(`input[type="radio"][name="${n}"]:checked`);
+        if(checked) localStorage.setItem("r_"+n, checked.value);
+        else localStorage.removeItem("r_"+n);
+      });
+
+      // checkboxes: act2
+      const cbs2 = Array.from(document.querySelectorAll('input[name="a2_1"]'));
+      localStorage.setItem("cb_a2_1", cbs2.map(c=>c.checked?"1":"0").join(""));
+
+      // checkboxes: sym_good
+      const cbs3 = Array.from(document.querySelectorAll('input[name="sym_good"]'));
+      localStorage.setItem("cb_sym_good", cbs3.map(c=>c.checked?"1":"0").join(""));
+    }catch(e){}
+  }
+
+  function loadFormState(){
+    try{
+      idsToSave.forEach(id=>{
+        const el = document.getElementById(id);
+        const v = localStorage.getItem("f_"+id);
+        if(el && v !== null) el.value = v;
+      });
+
+      // radios
+      const radios = Array.from(document.querySelectorAll('input[type="radio"]'));
+      const names = [...new Set(radios.map(r=>r.name))];
+      names.forEach(n=>{
+        const v = localStorage.getItem("r_"+n);
+        if(v){
+          const el = document.querySelector(`input[type="radio"][name="${n}"][value="${CSS.escape(v)}"]`);
+          if(el) el.checked = true;
+        }
+      });
+
+      // checkboxes: act2
+      const cb2 = localStorage.getItem("cb_a2_1");
+      if(cb2){
+        const cbs = Array.from(document.querySelectorAll('input[name="a2_1"]'));
+        cbs.forEach((c,i)=> c.checked = (cb2[i] === "1"));
+      }
+
+      // checkboxes: sym_good
+      const cb3 = localStorage.getItem("cb_sym_good");
+      if(cb3){
+        const cbs = Array.from(document.querySelectorAll('input[name="sym_good"]'));
+        cbs.forEach((c,i)=> c.checked = (cb3[i] === "1"));
+      }
+    }catch(e){}
+  }
+
+  document.addEventListener("input", (e)=>{
+    if(e.target.matches("textarea,input,select")) saveFormState();
+  });
+  document.addEventListener("change", (e)=>{
+    if(e.target.matches("textarea,input,select")) saveFormState();
+  });
+
+  // ---------------- Reset All ----------------
+  function resetAll(){
+    document.querySelectorAll('input[type="radio"],input[type="checkbox"]').forEach(el=> el.checked=false);
+    document.querySelectorAll('input[type="text"],textarea').forEach(el=> el.value="");
+
+    resetBins();
+    clearCanvas();
+    clearUploadedImage();
+
+    try{
+      Object.keys(localStorage).forEach(k=>{
+        if(
+          k.startsWith("f_") || k.startsWith("r_") || k.startsWith("cb_") ||
+          k==="mapCanvasData" || k===UPLOAD_KEY
+        ){
+          localStorage.removeItem(k);
+        }
+      });
+      localStorage.removeItem(CANVAS_H_KEY);
+    }catch(e){}
+
+    mode = "draw";
+    const pen = document.getElementById("penSize");
+    if(pen) pen.value = 6;
+
+    document.documentElement.style.removeProperty("--canvas-h");
+    fitCanvas();
+  }
+
+  // ---------------- Init ----------------
+  setTimeout(()=>{
+    const mode = loadFontMode();
+    setFontMode(mode);
+
+    applySavedCanvasHeight();
+    restoreUploadedImage();
+
+    fitCanvas();
+    loadFormState();
+
+    const saved = loadCanvas();
+    if(saved) restoreCanvas(saved);
+  }, 0);
+
+  window.addEventListener("resize", ()=>{
+    const saved = loadCanvas();
+    fitCanvas();
+    if(saved) restoreCanvas(saved);
+  });
+</script>
+</body>
+</html>
